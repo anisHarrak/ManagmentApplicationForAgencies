@@ -1,0 +1,35 @@
+/*
+ * message.cpp
+ *
+ *  Created on: 27 mars 2012
+ *      Author: anis
+ */
+#include "message.h"
+#include <iostream>
+#include <sstream>
+
+Message::Message(){}
+Message::Message(long t, long num):type(t),num_agence(num){}
+
+void Message::traiter_message()
+{
+	cout<<"hello message test ...";
+}
+string Message::to_string()
+{
+	string tmp;
+	stringstream out;
+
+	out<<this->type<<":"<<this->num_agence<<":";
+	tmp= out.str();
+	return tmp;
+}
+void Message::saisir()
+{
+	cout<<"entrer le type du message: ";
+	cin>>type;
+	cout<<"entrer le numéro de l'agence: ";
+	cin>>num_agence;
+}
+
+

@@ -1,0 +1,39 @@
+/*
+ * confirmation.cpp
+ *
+ *  Created on: 28 mars 2012
+ *      Author: anis
+ */
+#include "confirmation.h"
+#include <iostream>
+
+Confirmation::Confirmation():Message(){}
+Confirmation::Confirmation(long type,long num_agence,string contenu):Message(type,num_agence)
+{
+	this->contenu=contenu;
+}
+
+void Confirmation::traiter_message()
+{
+	cout<<" message test confirmation ... ";
+}
+string Confirmation::to_string()
+{
+	string tmp;
+	stringstream out;
+
+	out<<this->type<<":"<<this->num_agence<<":"<<this->contenu<<":";
+	tmp= out.str();
+	return tmp;
+}
+void Confirmation::saisir()
+{
+	cout<<"entrer le type du message: ";
+	cin>>type;
+	cout<<"entrer le numéro de l'agence: ";
+	cin>>num_agence;
+	cout<<"entrer le contenu du message: ";
+	cin>>contenu;
+}
+
+

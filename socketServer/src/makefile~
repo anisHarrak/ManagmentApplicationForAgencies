@@ -1,0 +1,12 @@
+prog: confirmation.o reservation.o message.o main.o 
+	g++ -Wall confirmation.o reservation.o message.o main.o  -o prog
+confirmation.o: confirmation.h confirmation.cpp
+	g++ -Wall -c confirmation.cpp -o confirmation.o
+reservation.o: reservation.h reservation.cpp
+	g++ -Wall -c reservation.cpp -o reservation.o
+main.o: main.cpp
+	g++ -Wall -c main.cpp -o main.o
+message.o: message.h message.cpp
+	g++ -Wall -c message.cpp -o message.o
+
+

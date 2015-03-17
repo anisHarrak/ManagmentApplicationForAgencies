@@ -1,0 +1,201 @@
+/*
+ * agent.cpp
+ *
+ *  Created on: 31 mars 2012
+ *      Author: anis
+ */
+#include "agent.h"
+#include "message.h"
+#include <iostream>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <cstdlib>
+#include <cstring>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <string.h>
+#include <stdlib.h>
+
+Agent::Agent(){}
+void Agent::envoyer_message(Message m)
+{
+	 int sockfd, portno, n;
+		    struct sockaddr_in serv_addr;
+		    struct hostent *server;
+
+		    char buffer[256];
+		  /*  if (argc < 3) {
+		       fprintf(stderr,"Spécifiez les arguments SVP %s nom_hôte No_Port\n", argv[0]);
+		       exit(0);
+		 }*/
+		    portno = 8555;
+		    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		    if (sockfd < 0)
+		        cerr<<"Erreur dans l'ouverture de socket";
+		    server = gethostbyname("localhost");
+		    if (server == NULL) {
+		        cout<<"Erreur, Nom d'hôte incorrect\n";
+		        exit(0);
+		    }
+		    bzero((char *) &serv_addr, sizeof(serv_addr));
+		    serv_addr.sin_family = AF_INET;
+		    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+		    serv_addr.sin_port = htons(portno);
+		    if (connect(sockfd,(const sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+		        cerr<<"Erreur de connexion";
+		        printf("Entrez le message à envoyer : ");
+		        bzero(buffer,256);
+
+
+
+		        string tmp;
+		        tmp=m.to_string();
+		        strcpy(buffer,tmp.c_str());
+
+
+		        //fgets(buffer,255,stdin);
+		        n = write(sockfd,buffer,strlen(buffer));
+		     // n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    //printf("Entrez le message a envoyer:");
+		      bzero(buffer,256);
+		      n = read(sockfd,buffer,255);
+		    //fgets(buffer,255,stdin);
+		   // n = write(sockfd,buffer,strlen(buffer));
+		    if (n < 0)
+		         cerr<<"Erreur d'écriture dans le socket";
+		    //printf("Entrez le message à envoyer : ");
+
+		    bzero(buffer,256);
+		    n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    printf("%s\n",buffer);
+
+
+}
+
+void Agent::envoyer_message(Reservation R)
+{
+	 int sockfd, portno, n;
+		    struct sockaddr_in serv_addr;
+		    struct hostent *server;
+
+		    char buffer[256];
+		  /*  if (argc < 3) {
+		       fprintf(stderr,"Spécifiez les arguments SVP %s nom_hôte No_Port\n", argv[0]);
+		       exit(0);
+		 }*/
+		    portno = 8555;
+		    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		    if (sockfd < 0)
+		        cerr<<"Erreur dans l'ouverture de socket";
+		    server = gethostbyname("localhost");
+		    if (server == NULL) {
+		        cout<<"Erreur, Nom d'hôte incorrect\n";
+		        exit(0);
+		    }
+		    bzero((char *) &serv_addr, sizeof(serv_addr));
+		    serv_addr.sin_family = AF_INET;
+		    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+		    serv_addr.sin_port = htons(portno);
+		    if (connect(sockfd,(const sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+		        cerr<<"Erreur de connexion";
+		        printf("Entrez le message à envoyer : ");
+		        bzero(buffer,256);
+
+
+
+		        string tmp;
+		        tmp=R.to_string();
+		        strcpy(buffer,tmp.c_str());
+
+
+		        //fgets(buffer,255,stdin);
+		        n = write(sockfd,buffer,strlen(buffer));
+		     // n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    //printf("Entrez le message a envoyer:");
+		      bzero(buffer,256);
+		      n = read(sockfd,buffer,255);
+		    //fgets(buffer,255,stdin);
+		   // n = write(sockfd,buffer,strlen(buffer));
+		    if (n < 0)
+		         cerr<<"Erreur d'écriture dans le socket";
+		    //printf("Entrez le message à envoyer : ");
+
+		    bzero(buffer,256);
+		    n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    printf("%s\n",buffer);
+
+
+}
+void Agent::envoyer_message(Confirmation C)
+{
+	 int sockfd, portno, n;
+		    struct sockaddr_in serv_addr;
+		    struct hostent *server;
+
+		    char buffer[256];
+		  /*  if (argc < 3) {
+		       fprintf(stderr,"Spécifiez les arguments SVP %s nom_hôte No_Port\n", argv[0]);
+		       exit(0);
+		 }*/
+		    portno = 8555;
+		    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		    if (sockfd < 0)
+		        cerr<<"Erreur dans l'ouverture de socket";
+		    server = gethostbyname("localhost");
+		    if (server == NULL) {
+		        cout<<"Erreur, Nom d'hôte incorrect\n";
+		        exit(0);
+		    }
+		    bzero((char *) &serv_addr, sizeof(serv_addr));
+		    serv_addr.sin_family = AF_INET;
+		    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+		    serv_addr.sin_port = htons(portno);
+		    if (connect(sockfd,(const sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+		        cerr<<"Erreur de connexion";
+		        printf("Entrez le message à envoyer : ");
+		        bzero(buffer,256);
+
+
+
+		        string tmp;
+		        tmp=C.to_string();
+		        strcpy(buffer,tmp.c_str());
+
+
+		        //fgets(buffer,255,stdin);
+		        n = write(sockfd,buffer,strlen(buffer));
+		     // n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    //printf("Entrez le message a envoyer:");
+		      bzero(buffer,256);
+		      n = read(sockfd,buffer,255);
+		    //fgets(buffer,255,stdin);
+		   // n = write(sockfd,buffer,strlen(buffer));
+		    if (n < 0)
+		         cerr<<"Erreur d'écriture dans le socket";
+		    //printf("Entrez le message à envoyer : ");
+
+		    bzero(buffer,256);
+		    n = read(sockfd,buffer,255);
+		    if (n < 0)
+		         cerr<<"Erreur de lecture du socket";
+		    printf("%s\n",buffer);
+
+
+}
+
+
+
+

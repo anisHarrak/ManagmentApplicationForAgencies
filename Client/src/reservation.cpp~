@@ -1,0 +1,78 @@
+/*
+ * reservation.cpp
+ *
+ *  Created on: 27 mars 2012
+ *      Author: anis
+ */
+#include "reservation.h"
+#include <iostream>
+
+Reservation::Reservation():Message(){}
+Reservation::Reservation(long type,long num_agence,long cd,string m,string mq,string n,string pr,long numtel,string dtcr,string dtst,string dtret,double prloc,double kilom):
+		Message(type,num_agence)
+{
+	code_etat=cd;
+	matricule=m;
+	marque=mq;
+	nom_cli=n;
+	prenom_cli=pr;
+	num_tel_cli=numtel;
+	date_creation_etat=dtcr;
+	date_sortie_vehicule=dtst;
+	date_retour_vehicule=dtret;
+	prix_location=prloc;
+	kilometrage=kilom;
+
+}
+
+string Reservation::to_string()
+{
+	string tmp;
+	stringstream out;
+
+	out<<1<<","<<100<<","<<this->code_etat<<","<<this->matricule<<","<<this->marque<<","<<this->nom_cli<<","
+			<<this->prenom_cli<<","<<this->num_tel_cli<<","<<this->date_creation_etat<<","<<this->date_sortie_vehicule<<","
+			<<this->date_retour_vehicule<<","<<this->prix_location<<","<<this->kilometrage;
+	tmp= out.str();
+	return tmp;
+}
+
+
+void Reservation::traiter_message()
+{
+	cout<<"message test reservation ...";
+}
+ void Reservation::saisir()
+ {
+	 	cout<<"entrer le type du message: ";
+	 	cin>>type;
+	 	cout<<"entrer le numéro de l'agence: ";
+	    cin>>num_agence;
+	 	cout<<"entrer le code d'état: ";
+	 	cin>>code_etat;
+	 	cout<<"entrer la matricule du véhicule: ";
+	 	cin>>matricule;
+	 	cout<<"entrer la marque du véhicule: ";
+	 	cin>>marque;
+	 	cout<<"entrer le nom du client: ";
+	 	cin>>nom_cli;
+	 	cout<<"entrer le prenom du client: ";
+	 	cin>>prenom_cli;
+	 	cout<<"entrer le numéro de téléphone du client: ";
+	 	cin>>num_tel_cli;
+	 	cout<<"entrer la date de création de l'état: ";
+	 	cin>>date_creation_etat;
+	 	cout<<"entrer la date de sortie du véhicule: ";
+	 	cin>>date_sortie_vehicule;
+	 	cout<<"entrer la date de retour du véhicule: ";
+	 	cin>>date_retour_vehicule;
+	 	cout<<"entrer le prix de location du véhicule: ";
+	 	cin>>prix_location;
+	 	cout<<"entrer le kilométrage du véhicule: ";
+	 	cin>>kilometrage;
+
+ }
+
+
+
+

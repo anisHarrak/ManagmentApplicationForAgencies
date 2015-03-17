@@ -1,0 +1,288 @@
+/*
+ * GestionAgence.cpp
+ *
+ *  Created on: 26 mars 2012
+ *      Author: anis
+ */
+#include "siege.h"
+#include "agence.h"
+#include <iostream>
+#include <fstream>
+#include <typeinfo>
+#include <string>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <cstdlib>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <string.h>
+#include <fcntl.h>
+
+
+Siege::Siege(){}
+Siege::Siege(long id):id_gest_agence(id){}
+long Siege::Agence_existe(long num_agence)
+{
+	for(unsigned int i=0;i<agence.size();i++)
+		{
+			if(agence[i].getNumAgence()==num_agence)
+			{
+				return i;
+			}
+		}
+		return -1;
+
+}
+
+void Siege::afficherAgence()
+{
+	for(unsigned int i=0;i<agence.size();i++)
+		{
+			 agence[i].afficher();
+		}
+}
+bool Siege::supprimerAgence(long num_agence)
+{
+	for(unsigned int i=0;i<agence.size();i++)
+				{
+					if(agence[i].getNumAgence()==num_agence)
+					{
+					//	delete agt[i];
+						agence.erase(agence.begin()+i);
+						return true;
+					}
+				}
+		return false;
+}
+Agence* Siege::rechercherAgence(long num_agence)
+{
+	for(unsigned int i=0;i<agence.size();i++)
+			{
+				if(agence[i].getNumAgence()==num_agence)
+				{
+					return &agence[i];
+				}
+			}
+	return NULL;
+}
+
+bool Siege::trouveragence(long num_agence)
+
+{
+	 ifstream fichier("agence.txt", ios::in);
+
+		        if(fichier)
+		        {
+		                int entier1, entier2;
+		                string chaine1, chaine2;
+		               while(!fichier.eof())
+		               {
+		                fichier >> entier1 >> chaine1 >>entier2>>chaine2;  /*on lit jusqu'à l'espace et on stocke ce qui est lu dans la variable indiquée */
+
+		                if(num_agence==entier1)
+		               {
+		                	return true;
+		                fichier.close();
+		               }
+		               }
+		        }
+		        else
+		                cerr << "Impossible d'ouvrir le fichier !" << endl;
+return false;
+
+}
+
+
+bool Siege::ajouterAgence( Agence& A)
+{
+	if(!trouveragence(A.getNumAgence()))
+		{
+			agence.push_back(A);
+			return true;
+		}else{
+			printf("\nl'agence avec le numéro %ld existe déja... Veuillez ressaisir vos données :\n ",A.getNumAgence());
+			A.saisir();
+			return false;
+			}
+
+}
+
+bool Siege::sauvegarderAgence(Agence& A)
+{
+	ofstream fichier ("agence.txt", ios::app );  //?
+		if (fichier)
+		{
+			for(unsigned int i=0;i<agence.size();i++)
+			{
+				fichier<<A<<endl;
+			}
+			fichier.close();
+			return true;
+		}
+	return false;
+}
+void Siege::consulteragence()
+{
+	 ifstream myfile;
+	  Agence A;
+	  myfile.open ("agence.txt");
+	  if(!myfile.is_open()){
+	    cout<<"Impossible d'ouvrir le fichier"<<endl;
+	  }else{
+			 myfile >>A;
+			while(!myfile.eof()){
+
+				cout<<"le num de l'agence est: "<<A.getNumAgence()<<endl;
+					cout<<"le nom de l'agence est: "<<A.getNomAgence()<<endl;
+
+					cout<<"le numéro de téléphone de l'agence est: "<<A.getNumTelAgence()<<endl;
+					cout<<"le mail de l'agence est: "<<A.getMailAgence()<<endl;
+
+			   myfile >>A;
+			   myfile.close();
+	    }
+
+	  }
+}
+bool Siege::rechercheragence(long num_agence)
+{
+
+	        ifstream fichier("agence.txt", ios::in);
+
+	        if(fichier)
+	        {
+	                int entier1, entier2;
+	                string chaine1, chaine2;
+	               while(!fichier.eof())
+	               {
+	                fichier >> entier1 >> chaine1 >>entier2>>chaine2;  /*on lit jusqu'à l'espace et on stocke ce qui est lu dans la variable indiquée */
+
+	                if(num_agence==entier1)
+	               {
+	                	cout<<"le num de l'agence est: "<<entier1<<endl;
+	                	cout<<"le nom de l'agence est: "<<chaine1<<endl;
+	                	cout<<"le numéro de téléphone de l'agence est: "<<entier2<<endl;
+	                	cout<<"le mail de l'agence est: "<<chaine2<<endl;
+	                	 fichier >> entier1 >> chaine1 >>entier2>>chaine2;
+	                return true;
+	                fichier.close();
+	               }
+	               }
+	        }
+	        else
+	                cerr << "Impossible d'ouvrir le fichier !" << endl;
+
+return false;
+}
+bool Siege::supprimeragence(long num_agence)
+
+{
+	ofstream tmp ("tmp.txt", ios::out );
+	 ifstream myfile;
+	  Agence A;
+	  myfile.open ("agence.txt");
+	  if(!myfile.is_open()){
+	    cout<<"Impossible d'ouvrir le fichier"<<endl;
+	  }
+	  if(!tmp.is_open()){
+	    cout<<"Impossible d'ouvrir le fichier"<<endl;
+	  }
+
+			while(!myfile.eof() )
+			{
+				if(!trouveragence(num_agence))
+				{
+					printf("l'agence avec le numéro %ld n'existe pas",num_agence);
+					return false;
+				}
+				myfile >>A;
+				if( num_agence!=A.getNumAgence())
+				{
+					tmp<<A;
+			   		//myfile >>A;
+
+				}
+	    	  }
+
+			myfile.close();
+			tmp.close();
+			rename("tmp.txt","agence.txt");
+			remove("tmp.txt");
+			return true;
+}
+void Siege::envoyer_message(Agence A)
+{
+	 int sockfd, portno;
+		    struct sockaddr_in serv_addr;
+		    struct hostent *server;
+
+		    char buffer[256];
+		    portno = 8222;
+		    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+		    if (sockfd < 0)
+		        cerr<<"Erreur dans l'ouverture de socket";
+		    server = gethostbyname("localhost");
+		    if (server == NULL) {
+		        cout<<"Erreur, Nom d'hôte incorrect\n";
+		        exit(0);
+		    }
+		    bzero((char *) &serv_addr, sizeof(serv_addr));
+		    serv_addr.sin_family = AF_INET;
+		    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+		    serv_addr.sin_port = htons(portno);
+		    if (connect(sockfd,(const sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+		        cerr<<"Erreur de connexion";
+		        bzero(buffer,256);
+
+		        string tmp;
+		        tmp=A.to_string();
+		        strcpy(buffer,tmp.c_str());
+
+		    write(sockfd,buffer,strlen(buffer));
+		    fcntl(sockfd,O_NONBLOCK);
+
+}
+void Siege::envoyer_messageSuppAgence(long num_agence)
+{
+	int sockfd, portno;
+			    struct sockaddr_in serv_addr;
+			    struct hostent *server;
+
+			    char buffer[256];
+			    portno = 8222;
+			    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+			    if (sockfd < 0)
+			        cerr<<"Erreur dans l'ouverture de socket";
+			    server = gethostbyname("localhost");
+			    if (server == NULL) {
+			        cout<<"Erreur, Nom d'hôte incorrect\n";
+			        exit(0);
+			    }
+			    bzero((char *) &serv_addr, sizeof(serv_addr));
+			    serv_addr.sin_family = AF_INET;
+			    bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+			    serv_addr.sin_port = htons(portno);
+			    if (connect(sockfd,(const sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+			        cerr<<"Erreur de connexion";
+			        bzero(buffer,256);
+
+			        string tmp;
+			       	stringstream out;
+			        out<<"9"<<","<<num_agence;
+			        tmp= out.str();
+
+			        strcpy(buffer,tmp.c_str());
+
+			    write(sockfd,buffer,strlen(buffer));
+			    fcntl(sockfd,O_NONBLOCK);
+
+}
+
+

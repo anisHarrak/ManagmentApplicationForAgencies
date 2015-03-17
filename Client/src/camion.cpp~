@@ -1,0 +1,107 @@
+/*
+ * Camion.cpp
+ *
+ *  Created on: 24 mars 2012
+ *      Author: anis
+ */
+#include "camion.h"
+#include <iostream>
+#include <sstream>
+
+Camion::Camion():Vehicule(){}
+Camion::Camion(string matricule,string couleur,string marque,double prix_heure,string type_remorque):Vehicule(matricule,couleur,marque,prix_heure)
+{
+	this->type_remorque=type_remorque;
+}
+void Camion::afficher()
+{
+	Vehicule::afficher();
+	cout<<"le type de remorque est: "<<type_remorque<<endl;
+
+}
+void Camion::saisir()
+{
+		cout<<"entrer la matricule du camion: ";
+		//char s2[30];
+		//saisir_chaine(s2,30);
+		//matricule=saisir_string(s2);
+		cin>>matricule;
+		cout<<"entrer la couleur du camion: ";
+		//char s3[10];
+		//saisir_chaine(s3,10);
+		//couleur=saisir_string(s3);
+		cin>>couleur;
+		cout<<"entrer la marque du camion: ";
+		//char s4[15];
+		//saisir_chaine(s4,15);
+		//marque=saisir_string(s4);
+		cin>>marque;
+		cout<<"entrer le prix par heure du camion: ";
+		char s[10];
+		prix_heure=saisir_double(s);
+		//cin>>prix_heure;
+		cout<<"entrer le type de remorque du camion: ";
+		//char s5[20];
+		//saisir_chaine(s5,20);
+		//type_remorque=saisir_string(s5);
+		cin>>type_remorque;
+}
+string Camion::to_string()
+{
+	string tmp;
+		stringstream out;
+
+		out<<"4"<<","<<this->matricule<<","<<this->couleur<<","<<this->marque<<","<<this->prix_heure<<","<<this->type_remorque;
+		tmp= out.str();
+		return tmp;
+
+}
+
+int Camion::saisir_double(char* s)
+{
+	double x;
+	scanf("%s",s);
+	x=atof(s);
+	//printf("%d",x);
+	if(!isdigit(x) && x!=0)
+	{
+		return x;
+
+	}else
+	{
+	printf("valeur erronée : ressaisissez vos données svp ... \n");
+	saisir_double(s);
+
+	}
+
+}
+void  Camion::search(char *chaine)
+{
+    char *p = strchr(chaine, '\n');
+
+    if (p)
+    {
+        *p = 0;
+    }
+}
+
+
+string Camion::saisir_string(char* s)
+{
+	string tmp;
+	stringstream out;
+	char buf[30];
+	sscanf(s,"%s",buf);
+	out<<buf;
+	tmp= out.str();
+	return tmp;
+}
+
+void  Camion::saisir_chaine(char* chaine, int taille_max)
+{
+	int longueur;
+	fgets(chaine, taille_max, stdin);
+	longueur = strlen(chaine);
+	if(longueur > 0 && (chaine[longueur - 1] == '\n'))
+	chaine[longueur - 1] = '\0';
+}
